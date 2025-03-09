@@ -6,7 +6,7 @@ library(cluster)
 library(fpc)
 library(dbscan)
 library(factoextra)
-library(mise)
+#library(mise)
 library(dendextend)
 
 numOfClusters = ""
@@ -673,12 +673,12 @@ while(startAgain == 0) {
   
       if(hierarchicalClusteringAlgorithm == "Yes") {
     
-        mise(vars = FALSE, figs = FALSE)
+        #   mise(vars = FALSE, figs = FALSE)
         dev.off(dev.list()["RStudioGD"])
     
       } else {
     
-        mise(vars = FALSE, figs = FALSE)
+        #    mise(vars = FALSE, figs = FALSE)
     
       }
   
@@ -686,12 +686,12 @@ while(startAgain == 0) {
   
       if(kMeansClusteringAlgorithm == "Yes") {
     
-        mise(vars = FALSE, figs = FALSE)
+        #   mise(vars = FALSE, figs = FALSE)
         dev.off(dev.list()["RStudioGD"])
     
       } else {
     
-        mise(vars = FALSE, figs = FALSE)
+        #   mise(vars = FALSE, figs = FALSE)
     
       }
   
@@ -699,12 +699,12 @@ while(startAgain == 0) {
   
       if(DBSCANClusteringAlgorithm == "Yes") {
     
-        mise(vars = FALSE, figs = FALSE)
+        #   mise(vars = FALSE, figs = FALSE)
         dev.off(dev.list()["RStudioGD"])
     
       } else {
     
-        mise(vars = FALSE, figs = FALSE)
+        #    mise(vars = FALSE, figs = FALSE)
     
       }
   
@@ -712,12 +712,12 @@ while(startAgain == 0) {
   
       if(choice == "Yes") {
     
-        mise(vars = FALSE, figs = FALSE)
+        #   mise(vars = FALSE, figs = FALSE)
         dev.off(dev.list()["RStudioGD"])
     
       } else {
     
-        mise(vars = FALSE, figs = FALSE)
+        #    mise(vars = FALSE, figs = FALSE)
     
       }
   
