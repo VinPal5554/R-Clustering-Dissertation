@@ -16,11 +16,20 @@ library(shiny)
 # UI (User Interface)
 ui <- fluidPage(
   titlePanel("Clustering App"),
+  
+  
+  
   sidebarLayout(
     sidebarPanel(
-      fileInput("datafile", "Upload Data (CSV)", accept = ".csv"),
-      numericInput("numClusters", "Number of Clusters", value = 3, min = 1),
-      actionButton("runClustering", "Run Clustering")
+      # Input to select clustering method
+      selectInput("method", 
+                  label = "Choose Clustering Method", 
+                  choices = c("Hierarchical", "K-Means", "DBSCAN")),
+      
+      # Dynamic UI for additional inputs based on clustering method
+      uiOutput("dynamic_ui"),
+      
+      actionButton("apply", "Apply Clustering")
     ),
     mainPanel(
       plotOutput("clusterPlot"),
@@ -31,6 +40,23 @@ ui <- fluidPage(
 
 # Server
 server <- function(input, output) {
+  
+  
+  # Dynamically generate additional inputs based on the selected clustering method
+  output$dynamic_ui <- renderUI({
+    if (input$method == "Hierarchical") {
+      # For Hierarchical, add a selectInput for the linkage method
+      selectInput("linkage", "Linkage Method", 
+                  choices = c("Single", "Complete", "Average", "Ward"))
+    } else if (input$method == "K-Means") {
+      # For K-Means, add a numericInput for the number of clusters (k)
+      numericInput("k", "Number of Clusters (k)", value = 3, min = 1)
+    } else if (input$method == "DBSCAN") {
+      # For DBSCAN, add a numericInput for eps
+      numericInput("eps", "Epsilon (eps)", value = 0.5, min = 0.1, max = 2)
+    }
+  })
+  
   
   # Reactive expression to load and process the data
   data <- reactive({
