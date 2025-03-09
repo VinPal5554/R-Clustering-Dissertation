@@ -2,12 +2,66 @@
 # The algorithms that I have implemented are: Hierarchical, K-Means, DBSCAN, and a robust/consensus clustering prototype
 # In order to assume the accuracy of clusters, a weighted kappa metric will be used
 
+# install.packages("shiny")
+
 library(cluster)
 library(fpc)
 library(dbscan)
 library(factoextra)
 #library(mise)
 library(dendextend)
+
+library(shiny)
+
+# UI (User Interface)
+ui <- fluidPage(
+  titlePanel("Clustering App"),
+  sidebarLayout(
+    sidebarPanel(
+      fileInput("datafile", "Upload Data (CSV)", accept = ".csv"),
+      numericInput("numClusters", "Number of Clusters", value = 3, min = 1),
+      actionButton("runClustering", "Run Clustering")
+    ),
+    mainPanel(
+      plotOutput("clusterPlot"),
+      verbatimTextOutput("clusterSummary")
+    )
+  )
+)
+
+# Server
+server <- function(input, output) {
+  
+  # Reactive expression to load and process the data
+  data <- reactive({
+    req(input$datafile)  # Ensures that a file is uploaded before proceeding
+    read.csv(input$datafile$datapath)
+  })
+  
+  # Perform clustering when the button is clicked
+  observeEvent(input$runClustering, {
+    req(data())  # Wait for data to be loaded
+    
+    # Perform clustering (assuming you are using k-means for example)
+    kmeans_result <- kmeans(data(), centers = input$numClusters)
+    
+    # Plot the clustering result
+    output$clusterPlot <- renderPlot({
+      plot(data(), col = kmeans_result$cluster, pch = 19)
+      points(kmeans_result$centers, col = 1:input$numClusters, pch = 8, cex = 2)
+    })
+    
+    # Display the cluster summary
+    output$clusterSummary <- renderPrint({
+      summary(kmeans_result)
+    })
+  })
+}
+
+# Run the Shiny app
+shinyApp(ui = ui, server = server)
+
+
 
 numOfClusters = ""
 startAgain = 0
